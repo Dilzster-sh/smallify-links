@@ -43,17 +43,20 @@ app.get('/:id',
 app.post('/new',
   // TODO: Implement some sort of rate limit
   async function (req, res, error) {
-    let { id, url } = req.body;
+    let { id = nanoid(7), url } = req.body;
     try {
       await schema.validate({ identifier: id, url });
-      if (!id) {
+
+      let exists = await urls.findOne({ identifier: id });
+      if (exists) {
         let valid = false;
-        while (!valid) {
+        while (valid == false) {
           id = nanoid(7);
-          const exists = await urls.findOne({ identifier: id });
+          exists = await urls.findOne({ identifier: id });
           if (!exists) valid = true;
         }
       }
+
       id = id.toLowerCase();
       const newEntry = { url, identifier: id };
       const created = await urls.insert(newEntry);
