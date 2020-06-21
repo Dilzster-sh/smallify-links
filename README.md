@@ -1,2 +1,2 @@
 # smallify-links
-Smallify links.
+Smallified links.
