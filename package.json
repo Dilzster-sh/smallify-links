@@ -1,0 +1,19 @@
+{
+  "name": "smallified-links",
+  "version": "1.0.0",
+  "description": "An application to \"smallify\" links",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dilzster-sh/smallify-links.git"
+  },
+  "author": "Dilzster-sh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dilzster-sh/smallify-links/issues"
+  },
+  "homepage": "https://github.com/Dilzster-sh/smallify-links#readme"
+}
