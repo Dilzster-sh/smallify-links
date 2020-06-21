@@ -25,7 +25,5 @@
     "nanoid": "^3.1.10",
     "yup": "^0.29.1"
   },
-  "devDependencies": {
-    "dotenv": "^8.2.0"
-  }
+  "devDependencies": {}
 }

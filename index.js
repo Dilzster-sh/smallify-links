@@ -6,8 +6,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const yup = require('yup');
 
-require('dotenv').config(); // Removed after development - npm install --save-dev dotenv
-
 const db = monk(process.env.MONGODB_URI);
 const urls = db.get('urls');
 const app = express();
