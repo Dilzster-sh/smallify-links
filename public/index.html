@@ -5,12 +5,60 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smallified Links</title>
+
+  <!-- Bootstrap -START- -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+  <!-- Bootstrap -END- -->
+
+  <style>
+    .center {
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
 
-  <h1>Hello, World!</h1>
+  <div class="container" id="app">
+    <header class="jumbotron jumbotron-fluid">
+      <h1 class="display-4 center">Smallified Links</h1>
+    </header>
 
+    <form v-if="visible" @submit.prevent="addNewURL()">
+      <div class="error" v-if="error">
+        {{error}}
+      </div>
+      <div class="form-group">
+        <label for="inputURL">URL 🚀</label>
+        <input type="text" class="form-control" id="inputURL" v-model="url" aria-describedby="URLHelp" required>
+        <small id="URLHelp" class="form-text text-muted">Please provide a valid url.</small>
+      </div>
+      <div class="form-group">
+        <label for="inputID">Identifier 📃</label>
+        <input type="text" class="form-control" id="inputID" v-model="id" aria-describedby="IDHelp">
+        <small id="IDHelp" class="form-text text-muted">This is optional.</small>
+      </div>
+
+      <button class="btn btn-primary float-right" type="submit">Create Short URL</button>
+    </form>
+
+    <div v-if="created">
+      <p class="created">Your short url is: <a :href="created">{{created}}</a></p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="./main.js" defer></script>
 </body>
 
 </html>
