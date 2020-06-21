@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/Dilzster-sh/smallify-links/issues"
   },
-  "homepage": "https://github.com/Dilzster-sh/smallify-links#readme"
+  "homepage": "https://github.com/Dilzster-sh/smallify-links#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.23.1",
+    "morgan": "^1.10.0",
+    "yup": "^0.29.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0"
+  }
 }
