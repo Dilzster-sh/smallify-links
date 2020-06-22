@@ -1,10 +1,15 @@
+const rateLimit = require('express-rate-limit');
 const { default: monk } = require('monk');
+const endpoints = require('./endpoints');
 const { nanoid } = require('nanoid');
 const express = require('express');
 const helment = require('helmet');
 const morgan = require('morgan');
+const path = require('path');
 const cors = require('cors');
 const yup = require('yup');
+
+require('dotenv').config(); // development only
 
 const db = monk(process.env.MONGODB_URI);
 const urls = db.get('urls');
@@ -13,7 +18,6 @@ const schema = yup.object().shape({
   url: yup.string().trim().url().required(),
   identifier: yup.string().trim().matches(/[\w\-]/i)
 });
-const notFound = "<h1><b>404</b>Unable to find url.</h1>";
 
 urls.createIndex({ identifier: 1 }, { unique: true });
 
@@ -22,24 +26,39 @@ app.use(express.json());
 app.use(morgan('tiny'));
 app.use(helment());
 app.use(cors());
+app.use('/api', rateLimit({
+  windowMs: (15 * 60) * 1000,
+  max: 50 // 50 API requests per 15 mins.
+}));
+
+const notFound = path.join(__dirname, 'public', '404.html');
+
+// Endpoint: '/api'
+
+app.get('/api',
+  async function (req, res) {
+    // Return help for API
+    res.status(200).json({
+      message: 'OK',
+      data: endpoints
+    });
+  });
 
 app.get('/:id',
   async function (req, res) {
     const { id } = req.params;
     try {
       const entry = await urls.findOne({ identifier: id });
-      if (entry)
-        res.redirect(entry.url);
-      else
-        res.status(404).send(notFound);
+      if (!entry) throw new Error('not found');
+      else res.redirect(entry.url);
     }
     catch (error) {
-      return res.status(404).send(notFound);
+      res.status(404)
+        .sendFile(notFound);
     }
   });
 
-app.post('/new',
-  // TODO: Implement some sort of rate limit
+app.post('/api/create',
   async function (req, res, error) {
     let { id = nanoid(7), url } = req.body;
     try {
@@ -67,7 +86,8 @@ app.post('/new',
 
 app.use(
   function (req, res, next) {
-    res.status(404).send(notFound);
+    res.status(404)
+      .sendFile(notFound);
   });
 
 app.use(
