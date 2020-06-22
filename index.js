@@ -27,8 +27,8 @@ app.use(morgan('tiny'));
 app.use(helment());
 app.use(cors());
 app.use('/api', rateLimit({
-  windowMs: (15 * 60) * 1000,
-  max: 50 // 50 API requests per 15 mins.
+  windowMs: (15e+3),
+  max: 1 // 1 request per 15 seconds
 }));
 
 const notFound = path.join(__dirname, 'public', '404.html');
