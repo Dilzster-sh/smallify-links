@@ -1,7 +1,7 @@
 # Smallify Links
 
-An application made to shorten links.
-Uses MongoDB for storing each shortened link.
+- An application made to shorten links.
+- Uses MongoDB for storing each shortened link.
 
 
 ## RECENT UPDATES
