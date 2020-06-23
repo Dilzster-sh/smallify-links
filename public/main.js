@@ -11,25 +11,35 @@ const app = new Vue({
   methods: {
     async addNewURL() {
       this.error = '';
-      const resp = await fetch('/api/create', {
+      fetch('/api/create', {
         method: 'POST',
-        headers: {
-          'content-type': 'application/json'
-        },
         body: JSON.stringify({
           url: this.url,
           id: this.id || undefined
-        })
-      });
-      if (resp.ok) {
-        const result = await resp.json();
-        this.visible = false;
-        this.created = 'http://localhost:8080/' + result.identifier;
-      }
-      else {
-        const result = await resp.json();
-        this.error = result.message;
-      }
+        }),
+        headers: {
+          'content-type': 'application/json'
+        }
+      })
+        .then(
+          (response) => {
+            if (response.ok)
+              return response.json()
+            else
+              throw response.status;
+          })
+        .then(
+          (json) => {
+            this.created = 'http://localhost:8080/' + json.identifier;
+            this.visible = false;
+          })
+        .catch(
+          (error) => {
+            if (error.toString() == "429") {
+              this.error = "You're being rate limited, Please try again later."
+            } else this.error = error;
+            this.visible = false;
+          });
     }
   }
 });
